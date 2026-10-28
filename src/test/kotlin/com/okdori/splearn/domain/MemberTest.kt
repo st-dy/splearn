@@ -25,9 +25,11 @@ class MemberTest : StringSpec({
         }
 
         member = Member.create(
-            email = "test@splearn.app",
-            nickname = "test",
-            password = "password",
+            MemberCreateRequest(
+                email = "test@splearn.app",
+                nickname = "test",
+                password = "password",
+            ),
             passwordEncoder = passwordEncoder,
         )
     }
@@ -75,5 +77,26 @@ class MemberTest : StringSpec({
 
         member.verifyPassword("new_password", passwordEncoder) shouldBe true
         member.verifyPassword("password", passwordEncoder) shouldBe false
+    }
+
+    "회원이 활성화 상태인지 확인하는 메서드 isActivate() 는 회원이 활성화 상태이면 true, 아니면 false 를 반환해야 한다" {
+        member.isActivate() shouldBe false
+
+        member.activate()
+
+        member.isActivate() shouldBe true
+    }
+
+    "유효하지 않은 이메일로 회원 생성 시 예외가 발생해야 한다" {
+        shouldThrow<IllegalArgumentException> {
+            Member.create(
+                MemberCreateRequest(
+                    email = "",
+                    nickname = "test",
+                    password = "password",
+                ),
+                passwordEncoder = passwordEncoder,
+            )
+        }
     }
 })

@@ -8,7 +8,7 @@ package com.okdori.splearn.domain
  * description    :
  */
 class Member private constructor(
-    val email: String,
+    val email: Email,
     var nickname: String,
     var passwordHash: String,
     var status: MemberStatus,
@@ -43,18 +43,32 @@ class Member private constructor(
         this.passwordHash = passwordEncoder.encode(password)
     }
 
+    fun isActivate(): Boolean = this.status == MemberStatus.ACTIVATE
+
     companion object {
         fun create(
-            email: String,
-            nickname: String,
-            password: String,
+            memberCreateRequest: MemberCreateRequest,
             passwordEncoder: PasswordEncoder,
         ): Member =
             Member(
-                email,
-                nickname,
-                passwordEncoder.encode(password),
-                MemberStatus.PENDING,
+                email = Email(memberCreateRequest.email),
+                nickname = memberCreateRequest.nickname,
+                passwordHash = passwordEncoder.encode(memberCreateRequest.password),
+                status = MemberStatus.PENDING,
             )
+    }
+}
+
+@JvmInline
+value class Email(val address: String) {
+    init {
+        require(EMAIL_REGEX.matches(address)) {
+            "올바른 이메일 형식이 아닙니다: $address"
+        }
+    }
+
+    companion object {
+        private val EMAIL_REGEX =
+            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
     }
 }
