@@ -7,7 +7,7 @@ package com.okdori.splearn.domain
  * date           : 2026. 10. 29.
  * description    :
  */
-data class MemberCreateRequest(
+data class MemberRegisterRequest(
     val email: String,
     val nickname: String,
     val password: String,

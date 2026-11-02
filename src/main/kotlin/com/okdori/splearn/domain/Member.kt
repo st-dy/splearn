@@ -46,8 +46,8 @@ class Member private constructor(
     fun isActivate(): Boolean = this.status == MemberStatus.ACTIVATE
 
     companion object {
-        fun create(
-            memberCreateRequest: MemberCreateRequest,
+        fun register(
+            memberCreateRequest: MemberRegisterRequest,
             passwordEncoder: PasswordEncoder,
         ): Member =
             Member(

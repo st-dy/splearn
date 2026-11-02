@@ -24,8 +24,8 @@ class MemberTest : StringSpec({
                 passwordHash == password.uppercase()
         }
 
-        member = Member.create(
-            MemberCreateRequest(
+        member = Member.register(
+            MemberRegisterRequest(
                 email = "test@splearn.app",
                 nickname = "test",
                 password = "password",
@@ -89,8 +89,8 @@ class MemberTest : StringSpec({
 
     "유효하지 않은 이메일로 회원 생성 시 예외가 발생해야 한다" {
         shouldThrow<IllegalArgumentException> {
-            Member.create(
-                MemberCreateRequest(
+            Member.register(
+                MemberRegisterRequest(
                     email = "",
                     nickname = "test",
                     password = "password",
