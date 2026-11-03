@@ -1,5 +1,7 @@
 package com.okdori.splearn.domain
 
+import jakarta.persistence.*
+
 /**
  * packageName    : com.okdori.splearn.domain
  * fileName       : Member
@@ -7,12 +9,18 @@ package com.okdori.splearn.domain
  * date           : 2026. 10. 28.
  * description    :
  */
+@Entity
 class Member private constructor(
-    val email: Email,
+    var email: String,
     var nickname: String,
     var passwordHash: String,
+    @Enumerated(EnumType.STRING)
     var status: MemberStatus,
 ) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+
     fun activate() {
         check(status == MemberStatus.PENDING) {
             "회원이 PENDING 상태가 아닙니다"
@@ -51,7 +59,7 @@ class Member private constructor(
             passwordEncoder: PasswordEncoder,
         ): Member =
             Member(
-                email = Email(memberCreateRequest.email),
+                email = Email(memberCreateRequest.email).address,
                 nickname = memberCreateRequest.nickname,
                 passwordHash = passwordEncoder.encode(memberCreateRequest.password),
                 status = MemberStatus.PENDING,

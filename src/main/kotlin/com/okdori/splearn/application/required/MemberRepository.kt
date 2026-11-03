@@ -1,6 +1,5 @@
 package com.okdori.splearn.application.required
 
-import com.okdori.splearn.domain.Email
 import com.okdori.splearn.domain.Member
 import org.springframework.data.repository.Repository
 
@@ -11,6 +10,6 @@ import org.springframework.data.repository.Repository
  * date           : 2026. 11. 2.
  * description    :
  */
-interface MemberRepository: Repository<Email, Long> {
+interface MemberRepository: Repository<Member, Long> {
     fun save(member: Member): Member
 }

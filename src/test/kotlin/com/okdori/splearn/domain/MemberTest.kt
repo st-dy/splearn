@@ -1,5 +1,7 @@
 package com.okdori.splearn.domain
 
+import com.okdori.splearn.domain.MemberFixture.createMemberRegisterRequest
+import com.okdori.splearn.domain.MemberFixture.createPasswordEncoder
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
@@ -17,21 +19,9 @@ class MemberTest : StringSpec({
     lateinit var passwordEncoder: PasswordEncoder
 
     beforeTest {
-        passwordEncoder = object : PasswordEncoder {
-            override fun encode(password: String) = password.uppercase()
+        passwordEncoder = createPasswordEncoder()
 
-            override fun matches(password: String, passwordHash: String) =
-                passwordHash == password.uppercase()
-        }
-
-        member = Member.register(
-            MemberRegisterRequest(
-                email = "test@splearn.app",
-                nickname = "test",
-                password = "password",
-            ),
-            passwordEncoder = passwordEncoder,
-        )
+        member = Member.register(createMemberRegisterRequest(), passwordEncoder)
     }
 
     "회원 생성 시 상태는 PENDING 이어야 한다" {
@@ -89,14 +79,7 @@ class MemberTest : StringSpec({
 
     "유효하지 않은 이메일로 회원 생성 시 예외가 발생해야 한다" {
         shouldThrow<IllegalArgumentException> {
-            Member.register(
-                MemberRegisterRequest(
-                    email = "",
-                    nickname = "test",
-                    password = "password",
-                ),
-                passwordEncoder = passwordEncoder,
-            )
+            Member.register(createMemberRegisterRequest().copy(email = "invalid_email"), passwordEncoder)
         }
     }
 })

@@ -32,6 +32,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("io.kotest:kotest-runner-junit5:6.2.6")
+	testImplementation("io.kotest:kotest-extensions-spring:6.2.6")
 }
 
 kotlin {
