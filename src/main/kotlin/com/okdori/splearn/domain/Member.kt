@@ -11,7 +11,8 @@ import jakarta.persistence.*
  */
 @Entity
 class Member private constructor(
-    var email: String,
+    @Embedded
+    var email: Email,
     var nickname: String,
     var passwordHash: String,
     @Enumerated(EnumType.STRING)
@@ -59,7 +60,7 @@ class Member private constructor(
             passwordEncoder: PasswordEncoder,
         ): Member =
             Member(
-                email = Email(memberCreateRequest.email).address,
+                email = Email(memberCreateRequest.email),
                 nickname = memberCreateRequest.nickname,
                 passwordHash = passwordEncoder.encode(memberCreateRequest.password),
                 status = MemberStatus.PENDING,
@@ -67,8 +68,8 @@ class Member private constructor(
     }
 }
 
-@JvmInline
-value class Email(val address: String) {
+@Embeddable
+data class Email(val address: String) {
     init {
         require(EMAIL_REGEX.matches(address)) {
             "올바른 이메일 형식이 아닙니다: $address"
