@@ -3,6 +3,8 @@ package com.okdori.splearn.application.required
 import com.okdori.splearn.domain.Member
 import com.okdori.splearn.domain.MemberFixture.createMemberRegisterRequest
 import com.okdori.splearn.domain.MemberFixture.createPasswordEncoder
+import com.okdori.splearn.domain.PasswordEncoder
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.extensions.spring.SpringExtension
@@ -11,6 +13,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import jakarta.persistence.EntityManager
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+import org.springframework.dao.DataIntegrityViolationException
 
 /**
  * packageName    : com.okdori.splearn.application.required
@@ -25,9 +28,18 @@ class MemberRepositoryTest(
     private val memberRepository: MemberRepository,
     private val entityManager: EntityManager,
 ) : StringSpec({
+    lateinit var member: Member
+    lateinit var passwordEncoder: PasswordEncoder
+
+    beforeTest {
+        passwordEncoder = createPasswordEncoder()
+
+        member = Member.register(createMemberRegisterRequest(), passwordEncoder)
+    }
+
     "Data Class Email의 val 변수를 DB에서 읽어 복원한다" {
         val originalEmail = "test@splearn.app"
-        val member = Member.register(createMemberRegisterRequest(originalEmail), createPasswordEncoder())
+        val member = Member.register(createMemberRegisterRequest(originalEmail), passwordEncoder)
 
         entityManager.persist(member)
         entityManager.flush()
@@ -41,16 +53,26 @@ class MemberRepositoryTest(
     }
 
     "회원 등록 시 ID가 생성된다" {
-        val member = Member.register(
-            createMemberRegisterRequest(),
-            createPasswordEncoder(),
-        )
-
         member.id.shouldBeNull()
 
         memberRepository.save(member)
         entityManager.flush()
 
         member.id.shouldNotBeNull()
+    }
+
+    "이메일이 중복되면 저장에 실패한다" {
+        memberRepository.save(member)
+        entityManager.flush()
+
+        val member2 = Member.register(
+            createMemberRegisterRequest(member.email.address),
+            passwordEncoder,
+        )
+
+        shouldThrow<DataIntegrityViolationException> {
+            memberRepository.save(member2)
+            entityManager.flush()
+        }
     }
 })

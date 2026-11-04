@@ -1,6 +1,8 @@
 package com.okdori.splearn.domain
 
 import jakarta.persistence.*
+import org.hibernate.annotations.NaturalId
+import org.hibernate.annotations.NaturalIdCache
 
 /**
  * packageName    : com.okdori.splearn.domain
@@ -10,8 +12,10 @@ import jakarta.persistence.*
  * description    :
  */
 @Entity
+@NaturalIdCache
 class Member private constructor(
     @Embedded
+    @NaturalId
     var email: Email,
     var nickname: String,
     var passwordHash: String,
