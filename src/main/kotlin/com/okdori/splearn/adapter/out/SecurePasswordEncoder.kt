@@ -1,4 +1,4 @@
-package com.okdori.splearn.application.adapter.out
+package com.okdori.splearn.adapter.out
 
 import com.okdori.splearn.domain.PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
