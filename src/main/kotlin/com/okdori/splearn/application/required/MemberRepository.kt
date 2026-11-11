@@ -1,5 +1,6 @@
 package com.okdori.splearn.application.required
 
+import com.okdori.splearn.domain.Email
 import com.okdori.splearn.domain.Member
 import org.springframework.data.repository.Repository
 
@@ -12,4 +13,6 @@ import org.springframework.data.repository.Repository
  */
 interface MemberRepository: Repository<Member, Long> {
     fun save(member: Member): Member
+//    fun findByEmail_Address(address: String): Member?
+    fun findByEmail(email: Email): Member?
 }

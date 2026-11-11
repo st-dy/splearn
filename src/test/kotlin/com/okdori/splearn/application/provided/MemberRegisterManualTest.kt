@@ -76,6 +76,10 @@ private class MemberRepositoryStub : MemberRepository {
         ReflectionTestUtils.setField(member, "id", 1L)
         return member
     }
+
+    override fun findByEmail(email: Email): Member? {
+        return null
+    }
 }
 
 private class EmailSenderStub : EmailSender {
