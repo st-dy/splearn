@@ -5,9 +5,7 @@ import com.okdori.splearn.domain.MemberFixture.createMemberRegisterRequest
 import com.okdori.splearn.domain.MemberFixture.createPasswordEncoder
 import com.okdori.splearn.domain.PasswordEncoder
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -23,7 +21,6 @@ import org.springframework.dao.DataIntegrityViolationException
  * description    :
  */
 @DataJpaTest
-@ApplyExtension(SpringExtension::class)
 class MemberRepositoryTest(
     private val memberRepository: MemberRepository,
     private val entityManager: EntityManager,

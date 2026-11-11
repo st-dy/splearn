@@ -5,9 +5,7 @@ import com.okdori.splearn.domain.DuplicateEmailException
 import com.okdori.splearn.domain.MemberFixture
 import com.okdori.splearn.domain.MemberStatus
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.context.SpringBootTest
@@ -24,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 @Transactional
 @Import(SplearnTestConfiguration::class)
-@ApplyExtension(SpringExtension::class)
 class MemberRegisterTest(
     private val memberRegister: MemberRegister,
 ) : StringSpec({

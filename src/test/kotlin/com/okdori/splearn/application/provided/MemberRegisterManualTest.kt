@@ -11,9 +11,9 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.springframework.test.util.ReflectionTestUtils
 
 /**
@@ -67,7 +67,7 @@ class MemberRegisterManualTest : StringSpec({
         member.status shouldBe MemberStatus.PENDING
 
         Mockito.verify(emailSenderMock)
-            .send(eq(member.email), anyString(), anyString())
+            .send(eq(member.email), any(), any())
     }
 })
 
