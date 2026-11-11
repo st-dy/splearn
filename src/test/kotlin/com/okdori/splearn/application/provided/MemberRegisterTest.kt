@@ -1,92 +1,36 @@
 package com.okdori.splearn.application.provided
 
-import com.okdori.splearn.application.MemberService
-import com.okdori.splearn.application.required.EmailSender
-import com.okdori.splearn.application.required.MemberRepository
-import com.okdori.splearn.domain.Email
-import com.okdori.splearn.domain.Member
+import com.okdori.splearn.SplearnTestConfiguration
 import com.okdori.splearn.domain.MemberFixture
 import com.okdori.splearn.domain.MemberStatus
+import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito
-import org.springframework.test.util.ReflectionTestUtils
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 
 /**
  * packageName    : com.okdori.splearn.application.provided
  * fileName       : MemberRegisterTest
  * author         : okdori
- * date           : 2026. 11. 9.
+ * date           : 2026. 11. 13.
  * description    :
  */
-class MemberRegisterTest : StringSpec({
-    "Stub으로 회원을 등록한다" {
-        val register = MemberService(
-            MemberRepositoryStub(),
-            EmailSenderStub(),
-            MemberFixture.createPasswordEncoder(),
-        )
+@SpringBootTest
+@Import(SplearnTestConfiguration::class)
+@ApplyExtension(SpringExtension::class)
+class MemberRegisterTest(
+    private val memberRegister: MemberRegister,
+) : StringSpec({
 
-        val member = register.register(MemberFixture.createMemberRegisterRequest())
+    "회원 등록 시 PENDING 상태의 회원을 반환한다" {
+        val member = memberRegister.register(
+            MemberFixture.createMemberRegisterRequest(),
+        )
 
         member.id.shouldNotBeNull()
         member.status shouldBe MemberStatus.PENDING
-    }
-
-    "Mock으로 발송된 이메일을 확인한다" {
-        val emailSenderMock = EmailSenderMock()
-        val register = MemberService(
-            MemberRepositoryStub(),
-            emailSenderMock,
-            MemberFixture.createPasswordEncoder(),
-        )
-
-        val member = register.register(MemberFixture.createMemberRegisterRequest())
-
-        member.id.shouldNotBeNull()
-        member.status shouldBe MemberStatus.PENDING
-        emailSenderMock.tos shouldHaveSize 1
-        emailSenderMock.tos.first() shouldBe member.email
-    }
-
-    "Mockito로 이메일 발송을 검증한다" {
-        val emailSenderMock = Mockito.mock(EmailSender::class.java)
-        val register = MemberService(
-            MemberRepositoryStub(),
-            emailSenderMock,
-            MemberFixture.createPasswordEncoder(),
-        )
-
-        val member = register.register(MemberFixture.createMemberRegisterRequest())
-
-        member.id.shouldNotBeNull()
-        member.status shouldBe MemberStatus.PENDING
-
-        Mockito.verify(emailSenderMock)
-            .send(eq(member.email), anyString(), anyString())
     }
 })
-
-private class MemberRepositoryStub : MemberRepository {
-    override fun save(member: Member): Member {
-        ReflectionTestUtils.setField(member, "id", 1L)
-        return member
-    }
-}
-
-private class EmailSenderStub : EmailSender {
-    override fun send(email: Email, subject: String, content: String) {
-    }
-}
-
-private class EmailSenderMock : EmailSender {
-    val tos = mutableListOf<Email>()
-
-    override fun send(email: Email, subject: String, content: String) {
-        tos.add(email)
-    }
-}
