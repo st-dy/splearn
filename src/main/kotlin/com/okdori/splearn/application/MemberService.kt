@@ -9,6 +9,8 @@ import com.okdori.splearn.domain.Member
 import com.okdori.splearn.domain.MemberRegisterRequest
 import com.okdori.splearn.domain.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.validation.annotation.Validated
 
 /**
  * packageName    : com.okdori.splearn.application
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service
  * description    :
  */
 @Service
+@Transactional
+@Validated
 class MemberService(
     private val memberRepository: MemberRepository,
     private val emailSender: EmailSender,

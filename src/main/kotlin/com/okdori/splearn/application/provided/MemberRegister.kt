@@ -2,6 +2,7 @@ package com.okdori.splearn.application.provided
 
 import com.okdori.splearn.domain.Member
 import com.okdori.splearn.domain.MemberRegisterRequest
+import jakarta.validation.Valid
 
 /**
  * packageName    : com.okdori.splearn.application.provided
@@ -11,5 +12,5 @@ import com.okdori.splearn.domain.MemberRegisterRequest
  * description    :
  */
 interface MemberRegister {
-    fun register(memberRegisterRequest: MemberRegisterRequest): Member
+    fun register(@Valid memberRegisterRequest: MemberRegisterRequest): Member
 }
