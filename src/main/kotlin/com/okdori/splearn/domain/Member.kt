@@ -30,12 +30,12 @@ class Member private constructor(
         check(status == MemberStatus.PENDING) {
             "회원이 PENDING 상태가 아닙니다"
         }
-        this.status = MemberStatus.ACTIVATE
+        this.status = MemberStatus.ACTIVE
     }
 
     fun deactivate() {
-        check(status == MemberStatus.ACTIVATE) {
-            "회원이 ACTIVATE 상태가 아닙니다"
+        check(status == MemberStatus.ACTIVE) {
+            "회원이 ACTIVE 상태가 아닙니다"
         }
         this.status = MemberStatus.DEACTIVATED
     }
@@ -56,7 +56,7 @@ class Member private constructor(
         this.passwordHash = passwordEncoder.encode(password)
     }
 
-    fun isActivate(): Boolean = this.status == MemberStatus.ACTIVATE
+    fun isActivate(): Boolean = this.status == MemberStatus.ACTIVE
 
     companion object {
         fun register(

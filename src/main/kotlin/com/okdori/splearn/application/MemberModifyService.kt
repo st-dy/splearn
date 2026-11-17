@@ -1,5 +1,6 @@
 package com.okdori.splearn.application
 
+import com.okdori.splearn.application.provided.MemberFinder
 import com.okdori.splearn.application.provided.MemberRegister
 import com.okdori.splearn.application.required.EmailSender
 import com.okdori.splearn.application.required.MemberRepository
@@ -22,7 +23,8 @@ import org.springframework.validation.annotation.Validated
 @Service
 @Transactional
 @Validated
-class MemberService(
+class MemberModifyService(
+    private val memberFinder: MemberFinder,
     private val memberRepository: MemberRepository,
     private val emailSender: EmailSender,
     private val passwordEncoder: PasswordEncoder,
@@ -38,6 +40,14 @@ class MemberService(
         sendWelcomeEmail(member)
 
         return member
+    }
+
+    override fun activate(memberId: Long): Member {
+        val member = memberFinder.find(memberId)
+
+        member.activate()
+
+        return memberRepository.save(member)
     }
 
     private fun sendWelcomeEmail(member: Member) {

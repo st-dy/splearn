@@ -13,4 +13,6 @@ import jakarta.validation.Valid
  */
 interface MemberRegister {
     fun register(@Valid memberRegisterRequest: MemberRegisterRequest): Member
+
+    fun activate(memberId: Long): Member
 }

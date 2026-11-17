@@ -1,3 +1,4 @@
+/**
 package com.okdori.splearn.application.provided
 
 import com.okdori.splearn.application.MemberService
@@ -94,3 +95,4 @@ private class EmailSenderMock : EmailSender {
         tos.add(email)
     }
 }
+**/

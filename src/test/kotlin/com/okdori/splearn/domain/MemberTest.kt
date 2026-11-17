@@ -28,10 +28,10 @@ class MemberTest : StringSpec({
         member.status shouldBe MemberStatus.PENDING
     }
 
-    "회원 활성화 시 상태는 ACTIVATE 이어야 한다" {
+    "회원 활성화 시 상태는 ACTIVE 이어야 한다" {
         member.activate()
 
-        member.status shouldBe MemberStatus.ACTIVATE
+        member.status shouldBe MemberStatus.ACTIVE
     }
 
     "회원 가입완료 후 다시 활성화 시도 시 예외가 발생해야 한다" {

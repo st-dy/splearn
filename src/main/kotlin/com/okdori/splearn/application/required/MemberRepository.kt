@@ -15,4 +15,5 @@ interface MemberRepository: Repository<Member, Long> {
     fun save(member: Member): Member
 //    fun findByEmail_Address(address: String): Member?
     fun findByEmail(email: Email): Member?
+    fun findById(memberId: Long): Member?
 }
