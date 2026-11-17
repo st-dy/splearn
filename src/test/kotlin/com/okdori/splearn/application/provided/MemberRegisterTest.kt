@@ -1,11 +1,7 @@
 package com.okdori.splearn.application.provided
 
 import com.okdori.splearn.SplearnTestConfiguration
-import com.okdori.splearn.domain.DuplicateEmailException
-import com.okdori.splearn.domain.Member
-import com.okdori.splearn.domain.MemberFixture
-import com.okdori.splearn.domain.MemberRegisterRequest
-import com.okdori.splearn.domain.MemberStatus
+import com.okdori.splearn.domain.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull

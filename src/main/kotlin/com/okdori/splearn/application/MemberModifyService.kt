@@ -4,11 +4,7 @@ import com.okdori.splearn.application.provided.MemberFinder
 import com.okdori.splearn.application.provided.MemberRegister
 import com.okdori.splearn.application.required.EmailSender
 import com.okdori.splearn.application.required.MemberRepository
-import com.okdori.splearn.domain.DuplicateEmailException
-import com.okdori.splearn.domain.Email
-import com.okdori.splearn.domain.Member
-import com.okdori.splearn.domain.MemberRegisterRequest
-import com.okdori.splearn.domain.PasswordEncoder
+import com.okdori.splearn.domain.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
