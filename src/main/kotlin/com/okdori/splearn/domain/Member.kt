@@ -2,7 +2,6 @@ package com.okdori.splearn.domain
 
 import jakarta.persistence.*
 import org.hibernate.annotations.NaturalId
-import org.hibernate.annotations.NaturalIdCache
 
 /**
  * packageName    : com.okdori.splearn.domain
@@ -12,19 +11,24 @@ import org.hibernate.annotations.NaturalIdCache
  * description    :
  */
 @Entity
-@NaturalIdCache
 class Member private constructor(
-    @Embedded
+    email: Email,
+    nickname: String,
+    passwordHash: String,
+    status: MemberStatus,
+) : AbstractEntity() {
     @NaturalId
-    var email: Email,
-    var nickname: String,
-    var passwordHash: String,
-    @Enumerated(EnumType.STRING)
-    var status: MemberStatus,
-) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    var email: Email = email
+        protected set
+
+    var nickname: String = nickname
+        protected set
+
+    var passwordHash: String = passwordHash
+        protected set
+
+    var status: MemberStatus = status
+        protected set
 
     fun activate() {
         check(status == MemberStatus.PENDING) {
@@ -72,7 +76,6 @@ class Member private constructor(
     }
 }
 
-@Embeddable
 data class Email(val address: String) {
     init {
         require(EMAIL_REGEX.matches(address)) {
