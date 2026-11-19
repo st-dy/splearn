@@ -17,6 +17,7 @@ class Member private constructor(
     passwordHash: String,
     status: MemberStatus,
 ) : AbstractEntity() {
+    @Embedded
     @NaturalId
     var email: Email = email
         protected set
@@ -76,6 +77,7 @@ class Member private constructor(
     }
 }
 
+@Embeddable
 data class Email(val address: String) {
     init {
         require(EMAIL_REGEX.matches(address)) {
