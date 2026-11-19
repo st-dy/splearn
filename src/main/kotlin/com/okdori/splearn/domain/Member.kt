@@ -63,6 +63,9 @@ class Member private constructor(
 
     fun isActivate(): Boolean = this.status == MemberStatus.ACTIVE
 
+    override fun toString(): String =
+        "Member(${super.toString()}, email=$email, nickname=$nickname, status=$status)"
+
     companion object {
         fun register(
             memberCreateRequest: MemberRegisterRequest,
